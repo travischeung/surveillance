@@ -99,8 +99,6 @@ def send_sms():
 
 def on_motion():
     print('Motion detected!')
-    green.off()
-    red.on()
 
     if time() - last_msg_time > sms_timeout and not currently_sending:
         print('> Sending SMS...')
@@ -108,13 +106,11 @@ def on_motion():
 
 
 def no_motion():
-    green.on()
-    red.off()
+    print("motion")
 
 
 print('* Setting up...')
-green.on()
-red.on()
+
 
 port = serial.Serial()
 port.port = device
@@ -134,8 +130,7 @@ print('* Do not move, setting up the PIR sensor...')
 sensor.wait_for_no_motion()
 
 print('* Device ready! ', end='', flush=True)
-green.on()
-red.off()
+
 
 sensor.when_motion = on_motion
 sensor.when_no_motion = no_motion
