@@ -112,22 +112,22 @@ def no_motion():
 print('* Setting up...')
 
 
-# port = serial.Serial()
-# port.port = device
-# port.baudrate = 115200
-# port.timeout = 2
+port = serial.Serial()
+port.port = device
+port.baudrate = 115200
+port.timeout = 2
 
 # last_msg_time = 0
 # currently_sending = False
 
-# if not setup():
-#     print('* Retrying...')
-#     if not setup():
-#         print('* Try restarting the modem')
-#         exit(1)
+if not setup():
+    print('* Retrying...')
+    if not setup():
+        print('* Try restarting the modem')
+        exit(1)
 
-# print('* Do not move, setting up the PIR sensor...')
-# sensor.wait_for_no_motion()
+print('* Do not move, setting up the PIR sensor...')
+sensor.wait_for_no_motion()
 
 print('* Device ready! ', end='', flush=True)
 
