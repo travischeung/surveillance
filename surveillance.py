@@ -64,45 +64,45 @@ def check_response(string, amount):
     return string in result
 
 
-def send_sms():
-    global currently_sending, last_msg_time
-    currently_sending = True
+# def send_sms():
+#     global currently_sending, last_msg_time
+#     currently_sending = True
 
-    try:
-        port.write('AT+CMGS="{}" \r'.format(phone_number).encode())
-        if not check_response('>', 6):
-            print('Failed on CMGS')
-            currently_sending = False
-            return
+#     try:
+#         port.write('AT+CMGS="{}" \r'.format(phone_number).encode())
+#         if not check_response('>', 6):
+#             print('Failed on CMGS')
+#             currently_sending = False
+#             return
 
-        # Write the message terminated by 'Ctrl+Z' or '1A' in ASCII
-        port.write('{}\x1A \r'.format(message).encode())
+#         # Write the message terminated by 'Ctrl+Z' or '1A' in ASCII
+#         port.write('{}\x1A \r'.format(message).encode())
 
-        while True:
-            result = port.readline().decode()
+#         while True:
+#             result = port.readline().decode()
 
-            if 'OK' in result:
-                print('> SMS sent successfully')
-                last_msg_time = time()
-                currently_sending = False
-                return
+#             if 'OK' in result:
+#                 print('> SMS sent successfully')
+#                 last_msg_time = time()
+#                 currently_sending = False
+#                 return
 
-            if 'ERROR' in result:
-                print('> Failed to send SMS [{}]'.format(result.rstrip()))
-                currently_sending = False
-                return
-    except:
-        # Initiate setup if the got while the program was running
-        setup()
-        currently_sending = False
+#             if 'ERROR' in result:
+#                 print('> Failed to send SMS [{}]'.format(result.rstrip()))
+#                 currently_sending = False
+#                 return
+#     except:
+#         # Initiate setup if the got while the program was running
+#         setup()
+#         currently_sending = False
 
 
 def on_motion():
     print('Motion detected!')
 
-    if time() - last_msg_time > sms_timeout and not currently_sending:
-        print('> Sending SMS...')
-        threading.Thread(target=send_sms).start()
+    # if time() - last_msg_time > sms_timeout and not currently_sending:
+    #     print('> Sending SMS...')
+    #     threading.Thread(target=send_sms).start()
 
 
 def no_motion():
@@ -112,22 +112,22 @@ def no_motion():
 print('* Setting up...')
 
 
-port = serial.Serial()
-port.port = device
-port.baudrate = 115200
-port.timeout = 2
+# port = serial.Serial()
+# port.port = device
+# port.baudrate = 115200
+# port.timeout = 2
 
-last_msg_time = 0
-currently_sending = False
+# last_msg_time = 0
+# currently_sending = False
 
-if not setup():
-    print('* Retrying...')
-    if not setup():
-        print('* Try restarting the modem')
-        exit(1)
+# if not setup():
+#     print('* Retrying...')
+#     if not setup():
+#         print('* Try restarting the modem')
+#         exit(1)
 
-print('* Do not move, setting up the PIR sensor...')
-sensor.wait_for_no_motion()
+# print('* Do not move, setting up the PIR sensor...')
+# sensor.wait_for_no_motion()
 
 print('* Device ready! ', end='', flush=True)
 
