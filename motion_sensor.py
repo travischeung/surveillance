@@ -1,82 +1,25 @@
         
-# import RPi.GPIO as GPIO
+from asyncio.constants import DEBUG_STACK_DEPTH
+import RPi.GPIO as GPIO
 import time
-# gmail stuff haha
 import os
-import pickle
-# Gmail API utils
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-# for encoding/decoding messages in base64
-from base64 import urlsafe_b64decode, urlsafe_b64encode
-# for dealing with attachement MIME types
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
-from email.mime.audio import MIMEAudio
-from email.mime.base import MIMEBase
-from mimetypes import guess_type as guess_mime_type
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
 
+load_dotenv()
+TOKEN = os.getenv("DISCORD_TOKEN")
+bot = commands.Bot(command_prefix="!")
 
+async def on_ready():  # when the bot is ready
+    guild = discord.utils.get(bot.guilds, name=936704754275483738)
+    print('{bot.user} has joined this cringe discord.')
+    channel2 = bot.get_channel(936704754275483742)
+    await channel2.send("quiet bot")
 
-from oauth2client import client # Added
-from oauth2client import tools # Added
-from oauth2client.file import Storage # Added
-
-def get_authenticated_service(): # Modified
-    credential_path = os.path.join('./', 'credentials.json')
-    store = Storage(credential_path)
-    credentials = store.get()
-    if not credentials or credentials.invalid:
-        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
-        credentials = tools.run_flow(flow, store)
-    return build('gmail', 'v2', credentials=credentials)
-
-
-# Request all access (permission to read/send/receive emails, manage the inbox, and more)
-SCOPES = ['https://mail.google.com/']
-our_email = 'travis.cheung69@gmail.com'
-
-def gmail_authenticate():
-    creds = None
-    # the file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first time
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
-            creds = pickle.load(token)
-    # if there are no (valid) credentials availablle, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # save the credentials for the next run
-        with open("token.pickle", "wb") as token:
-            pickle.dump(creds, token)
-    return build('gmail', 'v1', credentials=creds)
-# 428510535995-iourd0p4tcktps4hn3uf0mturvfp19qj.apps.googleusercontent.com
-
-
-# get the Gmail API service
-service = get_authenticated_service()
-
-# creates the email itself
-def build_message(destination, body):
-    message = MIMEText(body)
-    message['to'] = destination
-    message['from'] = our_email
-    message['subject'] = "Intruder Detected"
-    return {'raw': urlsafe_b64encode(message.as_bytes()).decode()}
-
-def send_message(service, destination, obj, body, attachments=[]):
-    return service.users().messages().send(
-      userId="me",
-      body=build_message(destination, obj, body, attachments)
-    ).execute()
-
-send_message(service, "travis.cheung69@gmail.com", "detected movement")
+async def detected():
+    channel2 = bot.get_channel(936704754275483742)
+    await channel2.send("alert")
 
 
 GPIO.setwarnings(False)
@@ -91,8 +34,8 @@ while True:
         time.sleep(0.1)
     elif i==1:               #When output from motion sensor is HIGH
         print ("Intruder detected"),i
-        send_message(service, "travis.cheung69@gmail.com", "detected movement")
+        detected()
         GPIO.output(3, 1)  #Turn ON LED
         time.sleep(0.1)
 
-    
+
