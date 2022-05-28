@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix="!")
+serverID = 920395859617800252
 print('bot')
 
 @bot.event  # idk what this means but you have to do it
@@ -21,10 +22,10 @@ async def on_ready():  # when the bot is ready
     await channel2.send("quiet bot")
 
 @bot.event  # idk what this means but you have to do it
-async def detected():
+async def detected(ctx):
     print('message')
     channel2 = bot.get_channel(936704754275483742)
-    await channel2.send("alert")
+    await ctx.send("alert")
 
 
 GPIO.setwarnings(False)
@@ -32,7 +33,8 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.IN)         #Read output from PIR motion sensor
 GPIO.setup(3, GPIO.OUT)         #LED output pin
 
-async def run():
+@bot.event  # idk what this means but you have to do it
+async def run(ctx):
     print("now running")
     while True:
         i=GPIO.input(8)
@@ -42,7 +44,7 @@ async def run():
             time.sleep(0.1)
         elif i==1:               #When output from motion sensor is HIGH
             print ("Intruder detected"),i
-            await detected()
+            await detected(ctx)
             GPIO.output(3, 1)  #Turn ON LED
             time.sleep(0.1)
 
