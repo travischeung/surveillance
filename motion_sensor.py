@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix="!")
+print('bot')
 
 async def on_ready():  # when the bot is ready
     print("on ready running")
