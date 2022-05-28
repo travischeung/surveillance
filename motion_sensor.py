@@ -23,7 +23,8 @@ async def on_ready():  # when the bot is ready
     print("on ready running")
     guild = discord.utils.get(bot.guilds, name=936704754275483738)
     print('{bot.user} has joined this cringe discord.')
-    channel2 = bot.get_channel(936704754275483742)
+    channel2 = bot.get_channel(932132975552888942)
+    await channel2.send("back baby")
     print("now running")
     await detection()
 
@@ -37,7 +38,7 @@ async def detection():
         elif i==1:               #When output from motion sensor is HIGH
             print ("Intruder detected"),i
             print('message')
-            channel2 = bot.get_channel(936704754275483742)
+            channel2 = bot.get_channel(932132975552888942)
             await channel2.send("alert")
             time.sleep(0.1)
 
