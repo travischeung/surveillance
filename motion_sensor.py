@@ -30,11 +30,11 @@ async def on_ready():  # when the bot is ready
 async def detection():
     while True:
         i=GPIO.input(8)
-        if i==0:                 #When output from motion sensor is LOW
+        if i==1:                 #When output from motion sensor is LOW
             print ("No intruders"),i
             GPIO.output(3, 0)  #Turn OFF LED
             time.sleep(1)
-        elif i==1:               #When output from motion sensor is HIGH
+        elif i==0:               #When output from motion sensor is HIGH
             print ("Intruder detected"),i
             print('message')
             channel2 = bot.get_channel(980216715407421460)
