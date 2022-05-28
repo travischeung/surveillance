@@ -12,6 +12,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix="!")
 
 async def on_ready():  # when the bot is ready
+    print("on ready running")
     guild = discord.utils.get(bot.guilds, name=936704754275483738)
     print('{bot.user} has joined this cringe discord.')
     channel2 = bot.get_channel(936704754275483742)
@@ -19,6 +20,7 @@ async def on_ready():  # when the bot is ready
 
 @bot.event  # idk what this means but you have to do it
 async def detected():
+    print('message')
     channel2 = bot.get_channel(936704754275483742)
     await channel2.send("alert")
 
@@ -29,6 +31,7 @@ GPIO.setup(8, GPIO.IN)         #Read output from PIR motion sensor
 GPIO.setup(3, GPIO.OUT)         #LED output pin
 
 async def run():
+    print("now running")
     while True:
         i=GPIO.input(8)
         if i==0:                 #When output from motion sensor is LOW
