@@ -17,6 +17,7 @@ async def on_ready():  # when the bot is ready
     channel2 = bot.get_channel(936704754275483742)
     await channel2.send("quiet bot")
 
+@bot.event  # idk what this means but you have to do it
 async def detected():
     channel2 = bot.get_channel(936704754275483742)
     await channel2.send("alert")
@@ -26,6 +27,7 @@ GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(8, GPIO.IN)         #Read output from PIR motion sensor
 GPIO.setup(3, GPIO.OUT)         #LED output pin
+
 async def run():
     while True:
         i=GPIO.input(8)
@@ -39,5 +41,4 @@ async def run():
             GPIO.output(3, 1)  #Turn ON LED
             time.sleep(0.1)
 
-
-run()
+bot.run(TOKEN)
