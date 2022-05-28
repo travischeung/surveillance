@@ -25,7 +25,7 @@ from oauth2client import tools # Added
 from oauth2client.file import Storage # Added
 
 def get_authenticated_service(): # Modified
-    credential_path = os.path.join('./', 'credential_sample.json')
+    credential_path = os.path.join('./', 'credentials.json')
     store = Storage(credential_path)
     credentials = store.get()
     if not credentials or credentials.invalid:
