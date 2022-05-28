@@ -24,10 +24,10 @@ async def detected():
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(2, GPIO.IN)         #Read output from PIR motion sensor
+GPIO.setup(8, GPIO.IN)         #Read output from PIR motion sensor
 GPIO.setup(3, GPIO.OUT)         #LED output pin
 while True:
-    i=GPIO.input(2)
+    i=GPIO.input(8)
     if i==0:                 #When output from motion sensor is LOW
         print ("No intruders"),i
         GPIO.output(3, 0)  #Turn OFF LED
