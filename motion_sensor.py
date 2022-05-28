@@ -25,6 +25,9 @@ async def on_ready():  # when the bot is ready
     print('{bot.user} has joined this cringe discord.')
     channel2 = bot.get_channel(936704754275483742)
     print("now running")
+    await detection()
+
+async def detection():
     while True:
         i=GPIO.input(8)
         if i==0:                 #When output from motion sensor is LOW
@@ -37,5 +40,6 @@ async def on_ready():  # when the bot is ready
             channel2 = bot.get_channel(936704754275483742)
             await channel2.send("alert")
             time.sleep(0.1)
+
 
 bot.run(TOKEN)
