@@ -12,6 +12,7 @@ TOKEN = os.getenv("DISCORD_TOKEN")
 bot = commands.Bot(command_prefix="!")
 print('bot')
 
+@bot.event  # idk what this means but you have to do it
 async def on_ready():  # when the bot is ready
     print("on ready running")
     guild = discord.utils.get(bot.guilds, name=936704754275483738)
