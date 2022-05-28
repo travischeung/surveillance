@@ -18,6 +18,22 @@ from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from mimetypes import guess_type as guess_mime_type
 
+
+
+from oauth2client import client # Added
+from oauth2client import tools # Added
+from oauth2client.file import Storage # Added
+
+def get_authenticated_service(): # Modified
+    credential_path = os.path.join('./', 'credential_sample.json')
+    store = Storage(credential_path)
+    credentials = store.get()
+    if not credentials or credentials.invalid:
+        flow = client.flow_from_clientsecrets('credentials.json', SCOPES)
+        credentials = tools.run_flow(flow, store)
+    return build('gmail', 'v2', credentials=credentials)
+
+
 # Request all access (permission to read/send/receive emails, manage the inbox, and more)
 SCOPES = ['https://mail.google.com/']
 our_email = 'travis.cheung69@gmail.com'
@@ -42,10 +58,9 @@ def gmail_authenticate():
     return build('gmail', 'v1', credentials=creds)
 # 428510535995-iourd0p4tcktps4hn3uf0mturvfp19qj.apps.googleusercontent.com
 
-gmail_authenticate()
 
 # get the Gmail API service
-service = gmail_authenticate()
+service = get_authenticated_service()
 
 # creates the email itself
 def build_message(destination, body):
@@ -64,20 +79,20 @@ def send_message(service, destination, obj, body, attachments=[]):
 send_message(service, "travis.cheung69@gmail.com", "detected movement")
 
 
-# GPIO.setwarnings(False)
-# GPIO.setmode(GPIO.BOARD)
-# GPIO.setup(2, GPIO.IN)         #Read output from PIR motion sensor
-# GPIO.setup(3, GPIO.OUT)         #LED output pin
-# while True:
-#     i=GPIO.input(2)
-#     if i==0:                 #When output from motion sensor is LOW
-#         print ("No intruders"),i
-#         GPIO.output(3, 0)  #Turn OFF LED
-#         time.sleep(0.1)
-#     elif i==1:               #When output from motion sensor is HIGH
-#         print ("Intruder detected"),i
-#         send_message(service, "travis.cheung69@gmail.com", "detected movement")
-#         GPIO.output(3, 1)  #Turn ON LED
-#         time.sleep(0.1)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(2, GPIO.IN)         #Read output from PIR motion sensor
+GPIO.setup(3, GPIO.OUT)         #LED output pin
+while True:
+    i=GPIO.input(2)
+    if i==0:                 #When output from motion sensor is LOW
+        print ("No intruders"),i
+        GPIO.output(3, 0)  #Turn OFF LED
+        time.sleep(0.1)
+    elif i==1:               #When output from motion sensor is HIGH
+        print ("Intruder detected"),i
+        send_message(service, "travis.cheung69@gmail.com", "detected movement")
+        GPIO.output(3, 1)  #Turn ON LED
+        time.sleep(0.1)
 
     
