@@ -33,13 +33,13 @@ async def detection():
         if i==0:                 #When output from motion sensor is LOW
             print ("No intruders"),i
             GPIO.output(3, 0)  #Turn OFF LED
-            time.sleep(0.1)
+            time.sleep(1)
         elif i==1:               #When output from motion sensor is HIGH
             print ("Intruder detected"),i
             print('message')
             channel2 = bot.get_channel(980216715407421460)
             await channel2.send("alert")
-            time.sleep(0.1)
+            time.sleep(1)
 
 
 bot.run(TOKEN)
