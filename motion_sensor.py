@@ -1,7 +1,7 @@
         
 # import RPi.GPIO as GPIO
 import time
-# gmail stuff
+# gmail stuff haha
 import os
 import pickle
 # Gmail API utils
